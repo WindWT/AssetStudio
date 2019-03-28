@@ -464,6 +464,111 @@ namespace AssetStudioGUI
             });
         }
 
+        public static void ExportAssetsSync(string savePath, List<AssetItem> toExportAssets,
+            int assetGroupSelectedIndex) {
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+
+            int toExportCount = toExportAssets.Count;
+            int exportedCount = 0;
+            int i = 0;
+            Progress.Reset();
+            foreach (var asset in toExportAssets) {
+                var exportpath = savePath + "\\";
+                if (assetGroupSelectedIndex == 1) {
+                    exportpath += Path.GetFileNameWithoutExtension(asset.SourceFile.fullName) + "_export\\";
+                }
+                else if (assetGroupSelectedIndex == 0) {
+                    exportpath = savePath + "\\" + asset.TypeString + "\\";
+                }
+
+                Logger.Info($"Exporting {asset.TypeString}: {asset.Text}");
+                try {
+                    switch (asset.Type) {
+                        case ClassIDType.Texture2D:
+                            if (ExportTexture2D(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.AudioClip:
+                            if (ExportAudioClip(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.Shader:
+                            if (ExportShader(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.TextAsset:
+                            if (ExportTextAsset(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.MonoBehaviour:
+                            if (ExportMonoBehaviour(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.Font:
+                            if (ExportFont(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.Mesh:
+                            if (ExportMesh(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.VideoClip:
+                            if (ExportVideoClip(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.MovieTexture:
+                            if (ExportMovieTexture(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.Sprite:
+                            if (ExportSprite(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.Animator:
+                            if (ExportAnimator(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+                        case ClassIDType.AnimationClip:
+                            break;
+                        default:
+                            if (ExportRawFile(asset, exportpath)) {
+                                exportedCount++;
+                            }
+
+                            break;
+
+                    }
+                }
+                catch (Exception ex) {
+                    MessageBox.Show($"Export {asset.Type}:{asset.Text} error\r\n{ex.Message}\r\n{ex.StackTrace}");
+                }
+
+                Progress.Report(++i, toExportCount);
+            }
+        }
+
         public static void ExportSplitObjects(string savePath, TreeNodeCollection nodes, bool openAfterExport)
         {
             ThreadPool.QueueUserWorkItem(state =>

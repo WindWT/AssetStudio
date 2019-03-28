@@ -34,7 +34,9 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.extractFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extractFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -146,11 +148,14 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.loadFileToolStripMenuItem,
-            this.loadFolderToolStripMenuItem,
-            this.toolStripMenuItem1,
-            this.extractFileToolStripMenuItem,
-            this.extractFolderToolStripMenuItem});
+                this.loadFileToolStripMenuItem,
+                this.loadFolderToolStripMenuItem,
+                this.toolStripMenuItem1,
+                this.extractFileToolStripMenuItem,
+                this.extractFolderToolStripMenuItem,
+                this.toolStripMenuItem2,
+                this.exportFolderToolStripMenuItem,
+            });
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
             this.fileToolStripMenuItem.Text = "File";
@@ -187,6 +192,18 @@
             this.extractFolderToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
             this.extractFolderToolStripMenuItem.Text = "Extract folder";
             this.extractFolderToolStripMenuItem.Click += new System.EventHandler(this.extractFolderToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(151, 6);
+            // 
+            // exportFolderToolStripMenuItem
+            // 
+            this.exportFolderToolStripMenuItem.Name = "exportFolderToolStripMenuItem";
+            this.exportFolderToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.exportFolderToolStripMenuItem.Text = "Export folder";
+            this.exportFolderToolStripMenuItem.Click += new System.EventHandler(this.exportFolder_Click);
             // 
             // optionsToolStripMenuItem
             // 
@@ -379,7 +396,7 @@
             this.debugMenuItem.Name = "debugMenuItem";
             this.debugMenuItem.Size = new System.Drawing.Size(59, 21);
             this.debugMenuItem.Text = "Debug";
-            this.debugMenuItem.Visible = false;
+            //this.debugMenuItem.Visible = false;
             // 
             // buildClassStructuresMenuItem
             // 
@@ -970,6 +987,7 @@
         private System.Windows.Forms.TextBox listSearch;
         private System.Windows.Forms.ToolStripMenuItem loadFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadFolderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportFolderToolStripMenuItem;
         private System.Windows.Forms.ListView assetListView;
         private System.Windows.Forms.ColumnHeader columnHeaderName;
         private System.Windows.Forms.ColumnHeader columnHeaderSize;
@@ -1004,6 +1022,7 @@
         private System.Windows.Forms.ToolStripMenuItem enablePreview;
         private System.Windows.Forms.ToolStripMenuItem displayInfo;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem extractFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extractFolderToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
