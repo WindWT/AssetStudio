@@ -111,10 +111,10 @@ namespace AssetStudioGUI
                         var i = 0;
                         long tempSize = 0;
                         var tempList = new List<FileInfo>();
-                        foreach (var file in files.OrderBy(o=>Guid.NewGuid())) {
+                        foreach (var file in files.OrderBy(o => Guid.NewGuid())) {
                             tempList.Add(file);
                             tempSize += file.Length;
-                            if (tempSize >= 512 * 1024 * 1024 || i + 1 == files.Count) {
+                            if (tempSize >= 512 * 1024 * 1024 || i + 1 >= files.Count) {
                                 GC.Collect();
                                 assetsManager.LoadFiles(tempList.Select(o => o.FullName).ToArray());
 
@@ -157,7 +157,8 @@ namespace AssetStudioGUI
                                 tempSize = 0;
                             }
 
-                            BeginInvoke(new Action(() => { Text = $"{++i}/{files.Count} files exported"; }));
+                            var text= $"{++i}/{files.Count} files exported";
+                            BeginInvoke(new Action(() => { Text = text; }));
                         }
 
                         if (openAfterExport.Checked) {
