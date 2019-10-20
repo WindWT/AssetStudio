@@ -15,20 +15,20 @@ namespace AssetStudio
             {
                 if (m_SpriteAtlas.m_RenderDataMap.TryGetValue(m_Sprite.m_RenderDataKey, out var spriteAtlasData) && spriteAtlasData.texture.TryGet(out var m_Texture2D))
                 {
-                    return CutImage(m_Texture2D, m_Sprite, spriteAtlasData.textureRect, spriteAtlasData.settingsRaw);
+                    return CutImage(m_Texture2D, m_Sprite, spriteAtlasData.textureRect, spriteAtlasData.textureRectOffset, spriteAtlasData.settingsRaw);
                 }
             }
             else
             {
                 if (m_Sprite.m_RD.texture.TryGet(out var m_Texture2D))
                 {
-                    return CutImage(m_Texture2D, m_Sprite, m_Sprite.m_RD.textureRect, m_Sprite.m_RD.settingsRaw);
+                    return CutImage(m_Texture2D, m_Sprite, m_Sprite.m_RD.textureRect, m_Sprite.m_RD.textureRectOffset, m_Sprite.m_RD.settingsRaw);
                 }
             }
             return null;
         }
 
-        private static Bitmap CutImage(Texture2D m_Texture2D, Sprite m_Sprite, RectangleF textureRect, SpriteSettings settingsRaw)
+        private static Bitmap CutImage(Texture2D m_Texture2D, Sprite m_Sprite, RectangleF textureRect, Vector2 textureRectOffset, SpriteSettings settingsRaw)
         {
             var texture2D = new Texture2DConverter(m_Texture2D);
             var originalImage = texture2D.ConvertToBitmap(false);
@@ -37,11 +37,12 @@ namespace AssetStudio
                 using (originalImage)
                 {
                     //var spriteImage = originalImage.Clone(textureRect, PixelFormat.Format32bppArgb);
-                    var spriteImage = new Bitmap((int)textureRect.Width, (int)textureRect.Height, PixelFormat.Format32bppArgb);
-                    var destRect = new Rectangle(0, 0, (int)textureRect.Width, (int)textureRect.Height);
+                    var textureRectI = Rectangle.Round(textureRect);
+                    var spriteImage = new Bitmap(textureRectI.Width, textureRectI.Height, PixelFormat.Format32bppArgb);
+                    var destRect = new Rectangle(0, 0, textureRectI.Width, textureRectI.Height);
                     using (var graphic = Graphics.FromImage(spriteImage))
                     {
-                        graphic.DrawImage(originalImage, destRect, textureRect, GraphicsUnit.Pixel);
+                        graphic.DrawImage(originalImage, destRect, textureRectI, GraphicsUnit.Pixel);
                     }
                     if (settingsRaw.packed == 1)
                     {
@@ -77,17 +78,20 @@ namespace AssetStudio
                                     }
                                     using (var matr = new Matrix())
                                     {
-                                        if (m_Sprite.m_Pivot == Vector2.Zero) //5.4.2 down
+                                        var version = m_Sprite.version;
+                                        if (version[0] < 5
+                                           || (version[0] == 5 && version[1] < 4)
+                                           || (version[0] == 5 && version[1] == 4 && version[2] <= 1)) //5.4.1p3 down
                                         {
-                                            matr.Translate(m_Sprite.m_Rect.Width * 0.5f, m_Sprite.m_Rect.Height * 0.5f);
+                                            matr.Translate(m_Sprite.m_Rect.Width * 0.5f - textureRectOffset.X, m_Sprite.m_Rect.Height * 0.5f - textureRectOffset.Y);
                                         }
                                         else
                                         {
-                                            matr.Translate(m_Sprite.m_Rect.Width * m_Sprite.m_Pivot.X, m_Sprite.m_Rect.Height * m_Sprite.m_Pivot.Y);
+                                            matr.Translate(m_Sprite.m_Rect.Width * m_Sprite.m_Pivot.X - textureRectOffset.X, m_Sprite.m_Rect.Height * m_Sprite.m_Pivot.Y - textureRectOffset.Y);
                                         }
                                         matr.Scale(m_Sprite.m_PixelsToUnits, m_Sprite.m_PixelsToUnits);
                                         path.Transform(matr);
-                                        var bitmap = new Bitmap((int)textureRect.Width, (int)textureRect.Height);
+                                        var bitmap = new Bitmap(textureRectI.Width, textureRectI.Height);
                                         using (var graphic = Graphics.FromImage(bitmap))
                                         {
                                             using (var brush = new TextureBrush(spriteImage))
