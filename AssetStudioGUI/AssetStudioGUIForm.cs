@@ -124,7 +124,7 @@ namespace AssetStudioGUI
 
                                 var productName = string.Empty;
                                 var tempDic = new Dictionary<Object, AssetItem>();
-                                if (!dontLoadAssetsMenuItem.Checked) {
+                                if (!dontBuildAssetListMenuItem.Checked) {
                                     BuildAssetList(tempDic, displayAll.Checked, displayOriginalName.Checked,
                                         out productName);
                                 }
@@ -292,19 +292,6 @@ namespace AssetStudioGUI
         }
 
         private void AssetStudioForm_KeyDown(object sender, KeyEventArgs e) {
-            if (e.Control && e.Alt && e.KeyCode == Keys.D) {
-                debugMenuItem.Visible = !debugMenuItem.Visible;
-                buildClassStructuresMenuItem.Checked = debugMenuItem.Visible;
-                dontLoadAssetsMenuItem.Checked = debugMenuItem.Visible;
-                dontBuildHierarchyMenuItem.Checked = debugMenuItem.Visible;
-                if (tabControl1.TabPages.Contains(tabPage3)) {
-                    tabControl1.TabPages.Remove(tabPage3);
-                }
-                else {
-                    tabControl1.TabPages.Add(tabPage3);
-                }
-            }
-
             if (glControl1.Visible) {
                 if (e.Control) {
                     switch (e.KeyCode) {
@@ -1263,35 +1250,6 @@ namespace AssetStudioGUI
                 return true;
             }
             return false;
-        }
-
-        private void ExportAssets_Click(object sender, EventArgs e) {
-            if (exportableAssets.Count > 0) {
-                var saveFolderDialog1 = new OpenFolderDialog();
-                if (saveFolderDialog1.ShowDialog(this) == DialogResult.OK) {
-                    timer.Stop();
-
-                    List<AssetItem> toExportAssets = null;
-                    switch (((ToolStripItem)sender).Name) {
-                        case "exportAllAssetsMenuItem":
-                            toExportAssets = exportableAssets;
-                            break;
-                        case "exportFilteredAssetsMenuItem":
-                            toExportAssets = visibleAssets;
-                            break;
-                        case "exportSelectedAssetsMenuItem":
-                            toExportAssets = new List<AssetItem>(assetListView.SelectedIndices.Count);
-                            foreach (int i in assetListView.SelectedIndices) {
-                                toExportAssets.Add((AssetItem)assetListView.Items[i]);
-                            }
-                            break;
-                    }
-                    ExportAssets(saveFolderDialog1.Folder, toExportAssets, assetGroupOptions.SelectedIndex, openAfterExport.Checked);
-                }
-            }
-            else {
-                StatusStripUpdate("No exportable assets loaded");
-            }
         }
 
         private void SetProgressBarValue(int value) {

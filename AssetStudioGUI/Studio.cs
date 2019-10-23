@@ -518,67 +518,56 @@ namespace AssetStudioGUI
                             if (ExportTexture2D(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.AudioClip:
                             if (ExportAudioClip(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.Shader:
                             if (ExportShader(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.TextAsset:
                             if (ExportTextAsset(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.MonoBehaviour:
                             if (ExportMonoBehaviour(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.Font:
                             if (ExportFont(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.Mesh:
                             if (ExportMesh(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.VideoClip:
                             if (ExportVideoClip(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.MovieTexture:
                             if (ExportMovieTexture(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.Sprite:
                             if (ExportSprite(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.Animator:
                             if (ExportAnimator(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
                         case ClassIDType.AnimationClip:
                             break;
@@ -586,9 +575,7 @@ namespace AssetStudioGUI
                             if (ExportRawFile(asset, exportpath)) {
                                 exportedCount++;
                             }
-
                             break;
-
                     }
                 }
                 catch (Exception ex) {
