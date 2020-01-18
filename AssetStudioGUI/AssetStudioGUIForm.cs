@@ -135,8 +135,8 @@ namespace AssetStudioGUI
                                 }
 
                                 var toExportAssets = exportableAssets.Where(o => o.Type == ClassIDType.Texture2D
-                                                                                 || o.Type == ClassIDType.TextAsset
-                                                                                 || o.Type == ClassIDType.Sprite)
+                                                                                 || o.Type == ClassIDType.TextAsset)
+                                                                                 //|| o.Type == ClassIDType.Sprite)
                                     .ToList();
 
                                 if (!toExportAssets.Any()) {
