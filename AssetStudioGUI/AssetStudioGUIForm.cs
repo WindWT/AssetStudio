@@ -99,6 +99,10 @@ namespace AssetStudioGUI
         }
 
         private void exportFolder_Click(object sender, EventArgs e) {
+            var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+            var maxMemory = ramCounter.NextValue();
+            var maxFileSize = maxMemory * 3 / 4 / 12;   //magic number
+
             var openFolderDialog = new OpenFolderDialog();
             if (openFolderDialog.ShowDialog(this) == DialogResult.OK) {
                 var saveFolderDialog1 = new OpenFolderDialog();
@@ -114,7 +118,7 @@ namespace AssetStudioGUI
                         foreach (var file in files.OrderBy(o => Guid.NewGuid())) {
                             tempList.Add(file);
                             tempSize += file.Length;
-                            if (tempSize >= 512 * 1024 * 1024 || i + 1 >= files.Count) {
+                            if (tempSize >= maxFileSize * 1024 * 1024 || i + 1 >= files.Count) {
                                 GC.Collect();
                                 assetsManager.LoadFiles(tempList.Select(o => o.FullName).ToArray());
 
